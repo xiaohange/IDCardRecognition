@@ -1,5 +1,7 @@
 # IDCardRecognition
 
+![](https://github.com/xiaohange/IDCardRecognition/blob/master/timg.jpg?raw=true)
+
 ## 说明
 一个近乎完整的可识别中国身份证信息的Demo
 
