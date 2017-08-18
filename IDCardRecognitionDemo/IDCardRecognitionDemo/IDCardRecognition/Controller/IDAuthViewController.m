@@ -8,6 +8,7 @@
 
 #import "IDAuthViewController.h"
 #import "AVCaptureViewController.h"
+#import "JQAVCaptureViewController.h"
 
 @interface IDAuthViewController ()
 
@@ -54,9 +55,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - 立即拍摄
+#pragma mark - 正面拍摄
 - (IBAction)shoot:(UIButton *)sender {
     AVCaptureViewController *AVCaptureVC = [[AVCaptureViewController alloc] init];
+    [self.navigationController pushViewController:AVCaptureVC animated:YES];
+}
+#pragma mark - 反面拍摄
+- (IBAction)shootAction:(UIButton *)sender {
+    JQAVCaptureViewController *AVCaptureVC = [[JQAVCaptureViewController alloc] init];
     [self.navigationController pushViewController:AVCaptureVC animated:YES];
 }
 

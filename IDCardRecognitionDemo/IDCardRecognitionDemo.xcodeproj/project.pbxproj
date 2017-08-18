@@ -26,6 +26,10 @@
 		4755FC2B1EA6FF9300FC4FDC /* UIImage+Extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 4755FC171EA6FF9300FC4FDC /* UIImage+Extend.m */; };
 		4755FC321EA6FF9300FC4FDC /* RectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4755FC261EA6FF9300FC4FDC /* RectManager.m */; };
 		4755FC3A1EA6FFAC00FC4FDC /* zocr0.lib in Resources */ = {isa = PBXBuildFile; fileRef = 4755FC371EA6FFAC00FC4FDC /* zocr0.lib */; };
+		477773241F46BC730082028C /* libexidcardios.a in Resources */ = {isa = PBXBuildFile; fileRef = 4755FC391EA6FFAC00FC4FDC /* libexidcardios.a */; };
+		477773261F46C17B0082028C /* libexidcardios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4755FC391EA6FFAC00FC4FDC /* libexidcardios.a */; };
+		477773291F46C6470082028C /* JQIDCardScaningView.m in Sources */ = {isa = PBXBuildFile; fileRef = 477773271F46C6470082028C /* JQIDCardScaningView.m */; };
+		4777732C1F46CA5C0082028C /* JQAVCaptureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4777732A1F46CA5C0082028C /* JQAVCaptureViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +88,10 @@
 		4755FC371EA6FFAC00FC4FDC /* zocr0.lib */ = {isa = PBXFileReference; lastKnownFileType = file; path = zocr0.lib; sourceTree = "<group>"; };
 		4755FC381EA6FFAC00FC4FDC /* excards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = excards.h; sourceTree = "<group>"; };
 		4755FC391EA6FFAC00FC4FDC /* libexidcardios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libexidcardios.a; sourceTree = "<group>"; };
+		477773271F46C6470082028C /* JQIDCardScaningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JQIDCardScaningView.m; sourceTree = "<group>"; };
+		477773281F46C6470082028C /* JQIDCardScaningView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JQIDCardScaningView.h; sourceTree = "<group>"; };
+		4777732A1F46CA5C0082028C /* JQAVCaptureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JQAVCaptureViewController.m; sourceTree = "<group>"; };
+		4777732B1F46CA5C0082028C /* JQAVCaptureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JQAVCaptureViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				477773261F46C17B0082028C /* libexidcardios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +133,8 @@
 		4731D8AE1EA70AE80057A681 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				4777732B1F46CA5C0082028C /* JQAVCaptureViewController.h */,
+				4777732A1F46CA5C0082028C /* JQAVCaptureViewController.m */,
 				4731D8AF1EA70AE80057A681 /* AVCaptureViewController.h */,
 				4731D8B01EA70AE80057A681 /* AVCaptureViewController.m */,
 				4731D8B11EA70AE80057A681 /* IDAuthViewController.h */,
@@ -150,6 +161,8 @@
 			children = (
 				4731D8BB1EA70AE80057A681 /* LHSIDCardScaningView.h */,
 				4731D8BC1EA70AE80057A681 /* LHSIDCardScaningView.m */,
+				477773281F46C6470082028C /* JQIDCardScaningView.h */,
+				477773271F46C6470082028C /* JQIDCardScaningView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -326,7 +339,7 @@
 				TargetAttributes = {
 					4755FBDC1EA6FEA500FC4FDC = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = K2K9REBKPR;
+						DevelopmentTeam = S36WACFRQZ;
 						ProvisioningStyle = Automatic;
 					};
 					4755FBF51EA6FEA500FC4FDC = {
@@ -368,6 +381,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				477773241F46BC730082028C /* libexidcardios.a in Resources */,
 				4755FBF01EA6FEA500FC4FDC /* LaunchScreen.storyboard in Resources */,
 				4755FBED1EA6FEA500FC4FDC /* Assets.xcassets in Resources */,
 				4731D8BF1EA70AE80057A681 /* IDAuthViewController.xib in Resources */,
@@ -402,10 +416,12 @@
 				4755FBE81EA6FEA500FC4FDC /* ViewController.m in Sources */,
 				4755FBE51EA6FEA500FC4FDC /* AppDelegate.m in Sources */,
 				4755FC2B1EA6FF9300FC4FDC /* UIImage+Extend.m in Sources */,
+				4777732C1F46CA5C0082028C /* JQAVCaptureViewController.m in Sources */,
 				4755FC2A1EA6FF9300FC4FDC /* UIAlertController+Extend.m in Sources */,
 				4731D8C31EA70AE80057A681 /* LHSIDCardScaningView.m in Sources */,
 				4755FBE21EA6FEA500FC4FDC /* main.m in Sources */,
 				4731D8C21EA70AE80057A681 /* IDInfo.m in Sources */,
+				477773291F46C6470082028C /* JQIDCardScaningView.m in Sources */,
 				4731D8BD1EA70AE80057A681 /* AVCaptureViewController.m in Sources */,
 				4731D8BE1EA70AE80057A681 /* IDAuthViewController.m in Sources */,
 				4731D8C01EA70AE80057A681 /* IDInfoViewController.m in Sources */,
@@ -559,7 +575,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = K2K9REBKPR;
+				DEVELOPMENT_TEAM = S36WACFRQZ;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IDCardRecognitionDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -567,7 +584,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/IDCardRecognitionDemo/libexidcard",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.HanJunqiang.IDCardRecognitionDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohange.IDCardRecognitionDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -579,7 +596,8 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: 532167805@qq.com (ZF2KW65EH5)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = K2K9REBKPR;
+				DEVELOPMENT_TEAM = S36WACFRQZ;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IDCardRecognitionDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -587,7 +605,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/IDCardRecognitionDemo/libexidcard",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.HanJunqiang.IDCardRecognitionDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xiaohange.IDCardRecognitionDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

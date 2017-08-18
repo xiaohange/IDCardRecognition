@@ -4,9 +4,10 @@
 //
 //  Created by HanJunqiang on 2017/2/16.
 //  Copyright © 2017年 HaRi. All rights reserved.
-//  身份证-正面
+//
+//  身份证-反面
 
-#import "AVCaptureViewController.h"
+#import "JQAVCaptureViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "LHSIDCardScaningView.h"
@@ -18,7 +19,7 @@
 #import "UIAlertController+Extend.h"
 #import "JQIDCardScaningView.h"
 
-@interface AVCaptureViewController () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
+@interface JQAVCaptureViewController () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
 
 // 摄像头设备
 @property (nonatomic,strong) AVCaptureDevice *device;
@@ -38,8 +39,6 @@
 // 预览图层
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *previewLayer;
 
-// 人脸检测框区域
-@property (nonatomic,assign) CGRect faceDetectionFrame;
 
 // 队列
 @property (nonatomic,strong) dispatch_queue_t queue;
@@ -49,7 +48,7 @@
 
 @end
 
-@implementation AVCaptureViewController
+@implementation JQAVCaptureViewController
 
 #pragma mark - 检测是模拟器还是真机
 #if TARGET_IPHONE_SIMULATOR
@@ -94,22 +93,6 @@
                 _device.whiteBalanceMode = AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance;
             }
             
-//            NSError *error1;
-//            CMTime frameDuration = CMTimeMake(1, 30); // 默认是1秒30帧
-//            NSArray *supportedFrameRateRanges = [_device.activeFormat videoSupportedFrameRateRanges];
-//            BOOL frameRateSupported = NO;
-//            for (AVFrameRateRange *range in supportedFrameRateRanges) {
-//                if (CMTIME_COMPARE_INLINE(frameDuration, >=, range.minFrameDuration) && CMTIME_COMPARE_INLINE(frameDuration, <=, range.maxFrameDuration)) {
-//                    frameRateSupported = YES;
-//                }
-//            }
-//            
-//            if (frameRateSupported && [self.device lockForConfiguration:&error1]) {
-//                [_device setActiveVideoMaxFrameDuration:frameDuration];
-//                [_device setActiveVideoMinFrameDuration:frameDuration];
-////                [self.device unlockForConfiguration];
-//            }
-            
             [_device unlockForConfiguration];
         }
     }
@@ -144,6 +127,7 @@
         
         _videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
         _videoDataOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey:self.outPutSetting};
+        [_videoDataOutput setSampleBufferDelegate:self queue:self.queue];
     }
     
     return _videoDataOutput;
@@ -289,42 +273,11 @@
     [self.view.layer addSublayer:self.previewLayer];
     
     // 添加自定义的扫描界面（中间有一个镂空窗口和来回移动的扫描线）
-    LHSIDCardScaningView *IDCardScaningView = [[LHSIDCardScaningView alloc] initWithFrame:self.view.frame];
-    self.faceDetectionFrame = IDCardScaningView.facePathRect;
+    JQIDCardScaningView *IDCardScaningView = [[JQIDCardScaningView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:IDCardScaningView];
     
-    // 设置人脸扫描区域
-    /*
-     
-     为什么做人脸扫描？
-       
-     经实践证明，由于预览图层是全屏的，当用户有时没有将身份证对准拍摄框边缘时，也会成功读取身份证上的信息，即也会捕获到不完整的身份证图像。
-     因此，为了截取到比较完整的身份证图像，在自定义扫描界面的合适位置上加了一个身份证头像框，让用户将该小框对准身份证上的头像，最终目的是使程序截取到完整的身份证图像。
-     当该小框检测到人脸时，再对比人脸区域是否在这个小框内，若在，说明用户的确将身份证头像放在了这个框里，那么此时这一帧身份证图像大小正好合适且完整，接下来才捕获该帧，就获得了完整的身份证截图。（若不在，那么就不捕获此时的图像）
-    
-     理解：检测身份证上的人脸是为了获得证上的人脸区域，获得人脸区域是为了希望人脸区域能在小框内，这样的话，才截取到完整的身份证图像。
-     
-     个人认为：有了文字、拍摄区域的提示，99%的用户会主动将身份证和拍摄框边缘对齐，就能够获得完整的身份证图像，不做人脸区域的检测也可以。。。
-    
-     ps: 如果你不想加入人脸识别这一功能，你的app无需这么精细的话或者你又想读取到身份证反面的信息（签发机关，有效期），请这样做：
-     
-     1、请注释掉所有metadataOutput的代码及其下面的那个代理方法（-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection）
-     
-     2、请在videoDataOutput的懒加载方法的if(_videoDataOutput == nil){}语句块中添加[_videoDataOutput setSampleBufferDelegate:self queue:self.queue];
-     
-     3、请注释掉AVCaptureVideoDataOutputSampleBufferDelegate下的那个代理方法中的
-     if (self.videoDataOutput.sampleBufferDelegate) {
-         [self.videoDataOutput setSampleBufferDelegate:nil queue:self.queue];
-     }
-     
-     4、运行程序，身份证正反两面皆可被检测到，请查看打印的信息。
-     
-     */
-//    [[NSNotificationCenter defaultCenter] addObserverForName:AVCaptureInputPortFormatDescriptionDidChangeNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification* _Nonnull note) {
-//        __weak __typeof__(self) weakSelf = self;
-        self.metadataOutput.rectOfInterest = [self.previewLayer metadataOutputRectOfInterestForRect:IDCardScaningView.facePathRect];
-//    }];
-    
+    self.metadataOutput.rectOfInterest = [self.previewLayer metadataOutputRectOfInterestForRect:IDCardScaningView.facePathRect];
+
     // 添加关闭按钮
     [self addCloseButton];
     
@@ -407,29 +360,6 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark - AVCaptureMetadataOutputObjectsDelegate
-#pragma mark 从输出的元数据中捕捉人脸
-// 检测人脸是为了获得“人脸区域”，做“人脸区域”与“身份证人像框”的区域对比，当前者在后者范围内的时候，才能截取到完整的身份证图像
--(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
-    if (metadataObjects.count) {
-        AVMetadataMachineReadableCodeObject *metadataObject = metadataObjects.firstObject;
-        
-        AVMetadataObject *transformedMetadataObject = [self.previewLayer transformedMetadataObjectForMetadataObject:metadataObject];
-        CGRect faceRegion = transformedMetadataObject.bounds;
-        
-        if (metadataObject.type == AVMetadataObjectTypeFace) {
-            NSLog(@"是否包含头像：%d, facePathRect: %@, faceRegion: %@",CGRectContainsRect(self.faceDetectionFrame, faceRegion),NSStringFromCGRect(self.faceDetectionFrame),NSStringFromCGRect(faceRegion));
-            
-            if (CGRectContainsRect(self.faceDetectionFrame, faceRegion)) {// 只有当人脸区域的确在小框内时，才再去做捕获此时的这一帧图像
-                // 为videoDataOutput设置代理，程序就会自动调用下面的代理方法，捕获每一帧图像
-                if (!self.videoDataOutput.sampleBufferDelegate) {
-                    [self.videoDataOutput setSampleBufferDelegate:self queue:self.queue];
-                }
-            }
-        }
-    }
-}
-
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 #pragma mark 从输出的数据流捕捉单一的图像帧
 // AVCaptureVideoDataOutput获取实时图像，这个代理方法的回调频率很快，几乎与手机屏幕的刷新频率一样快
@@ -440,11 +370,6 @@
         if ([captureOutput isEqual:self.videoDataOutput]) {
             // 身份证信息识别
             [self IDCardRecognit:imageBuffer];
-            
-            // 身份证信息识别完毕后，就将videoDataOutput的代理去掉，防止频繁调用AVCaptureVideoDataOutputSampleBufferDelegate方法而引起的“混乱”
-            if (self.videoDataOutput.sampleBufferDelegate) {
-                [self.videoDataOutput setSampleBufferDelegate:nil queue:self.queue];
-            }
         }
     } else {
         NSLog(@"输出格式不支持");
@@ -552,78 +477,6 @@
     
     CVBufferRelease(imageBuffer);
 }
-
-/*
-- (UIImage*)imageWithImageSimple:(NSData *)data scaledToSize:(CGSize)newSize {
-    UIImage *image = [UIImage imageWithData:data];
-    
-    // Create a graphics image context
-    UIGraphicsBeginImageContext(newSize);
-    
-    // Tell the old image to draw in this new context, with the desired
-    // new size
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    
-    // Get the new image from the context
-    UIImage * newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    // End the context
-    UIGraphicsEndImageContext();
-    
-    // Return the new image.
-    
-    return newImage;
-}
-
-- (UIImage *)clipImageWithImage:(UIImage *)image InRect:(CGRect)rect {
-    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], rect);
-    UIImage *thumbScale = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    
-    return thumbScale;
-}
-
-- (void)addConnection {
-    AVCaptureConnection *videoConnection;
-    for (AVCaptureConnection *connection in [self.videoDataOutput connections]) {
-        for (AVCaptureInputPort *port in [connection inputPorts]) {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo]) {
-                videoConnection = connection;
-            }
-        }
-    }
-    
-    if ([videoConnection isVideoStabilizationSupported]) {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0) {
-            videoConnection.enablesVideoStabilizationWhenAvailable = YES;
-        }
-        else {
-            videoConnection.preferredVideoStabilizationMode = AVCaptureVideoStabilizationModeAuto;
-        }
-    }
-}
-
-- (void)configureDevice:(AVCaptureDevice *)device {
-    // Use Smooth focus
-    if( YES == [device lockForConfiguration:NULL] )
-    {
-        if([device respondsToSelector:@selector(setSmoothAutoFocusEnabled:)] && [device isSmoothAutoFocusSupported] )
-        {
-            [device setSmoothAutoFocusEnabled:YES];
-        }
-        AVCaptureFocusMode currentMode = [device focusMode];
-        if( currentMode == AVCaptureFocusModeLocked )
-        {
-            currentMode = AVCaptureFocusModeAutoFocus;
-        }
-        if( [device isFocusModeSupported:currentMode] )
-        {
-            [device setFocusMode:currentMode];
-        }
-        [device unlockForConfiguration];
-    }
-}
- */
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -14,6 +14,12 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *IDImageView;
 @property (strong, nonatomic) IBOutlet UILabel *IDNumLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sexLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *adressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *VisaAgencyLabel;
+@property (weak, nonatomic) IBOutlet UILabel *TermOfValidityLabel;
 
 @end
 
@@ -27,8 +33,19 @@
     self.IDImageView.layer.cornerRadius = 8;
     self.IDImageView.layer.masksToBounds = YES;
     
-    self.IDNumLabel.text = _IDInfo.num;
+    
     self.IDImageView.image = _IDImage;
+    if (_IDInfo.name) {
+        self.IDNumLabel.text = _IDInfo.num;
+        self.nameLabel.text = [NSString stringWithFormat:@"姓名: %@",_IDInfo.name];
+        self.sexLabel.text = [NSString stringWithFormat:@"性别: %@",_IDInfo.gender];
+        self.nationLabel.text = [NSString stringWithFormat:@"民族: %@",_IDInfo.nation];
+        self.adressLabel.text = [NSString stringWithFormat:@"地址: %@",_IDInfo.address];
+    } else {
+        self.VisaAgencyLabel.text = [NSString stringWithFormat:@"签发机关: %@",_IDInfo.issue];
+        self.TermOfValidityLabel.text = [NSString stringWithFormat:@"有效期: %@",_IDInfo.valid];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
