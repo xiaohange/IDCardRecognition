@@ -7,7 +7,7 @@
 
 可自动快速读出身份证上的信息（姓名、性别、民族、住址、身份证号码）并截取到身份证图像
 
-![IDAuthViewController-开始验证身份证](https://github.com/xiaohange/IDCardRecognition/blob/master/demo.png?raw=true)
+![IDAuthViewController-开始验证身份证](https://github.com/xiaohange/IDCardRecognition/blob/master/helloDemo.png?raw=true)
 ## 实现原理
 经实践发现，只要身份证号码处于摄像头预览图层中时，即不用完全对准身份证也可以读取到身份证号码，但此时截取到的身份证图像并不完整。
 
